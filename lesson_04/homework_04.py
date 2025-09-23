@@ -49,7 +49,6 @@ for letter in adventures_of_tom_sawer:
     if letter == "h":
         h_counter = h_counter + 1
 print(f"Task 4: \nLetter 'h' appears in text {h_counter} time's \n")
-
 # task 05
 """ Виведіть, скільки слів у тексті починається з Великої літери?
 """
@@ -62,11 +61,10 @@ print(f"Task 5 : \n{counter_capital} words starts with uppercase \n")
 # task 06
 """ Виведіть позицію, на якій слово Tom зустрічається вдруге
 """
-toms_index = 0
-for letter in adventures_of_tom_sawer:
-    toms_index = adventures_of_tom_sawer.find("Tom")
+first_entry = adventures_of_tom_sawer.find('Tom')
+second_entry = adventures_of_tom_sawer.find('Tom', first_entry + 1)
 
-print(f"Task 6 : \n Word Tom can be found 2th time by index = {toms_index} \n")
+print(f"Task 6 : \n Word Tom can be found 2th time by index = {second_entry} \n")
 # task 07
 """ Розділіть змінну adventures_of_tom_sawer по кінцю речення.
 Збережіть результат у змінній adventures_of_tom_sawer_sentences
