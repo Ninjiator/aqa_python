@@ -27,17 +27,15 @@ people_records.insert(0, ('Tony', 'Stark', 35, 'Iron Man', 'New York'))
 print(f"Task 1: {people_records[0]}")
 
 # Task 2
-temp_tuple = people_records[1]
-people_records.insert(1, people_records[5])
-people_records.insert(5, temp_tuple)
+people_records[1], people_records[5] = people_records[5], people_records[1]
 print(f"Task 2: tuple from index 5 now under index 1 -> {people_records[1]}")
 print(f"Task 2: tuple from index 1 now under index 5 -> {people_records[5]}")
 
 #Task 3
 people_older_than_30 = (people_records[6], people_records[10], people_records[13])
-print(f"Task 3: tuple people_older_than_30 :\n{people_older_than_30}")
-for person in people_older_than_30:
-    if person[2] >= 30:
-        print(f"{person[0]} is older than 30")
-    else:
-        print(f"{person[0]} is not older than she is {person[2]} years old")
+#print(f"Task 3: tuple people_older_than_30 :\n{people_older_than_30}")
+
+if people_records[6][2] >= 30 and people_records[10][2] >= 30 and people_records[13][2] >= 30:
+    print("People under index 6,10,13 are older than 30")
+else:
+    print("People under index 6,10,13 are not older than 30")
