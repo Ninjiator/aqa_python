@@ -8,16 +8,15 @@ def multiplication_table(number):
     multiplier = 1
 
     # Complete the while loop condition.
-    while multiplier <= number:
+    result = 0
+    while result <= 25:
         result = number * multiplier
-        # десь тут помила, а може не одна
-        if  result > "25":
-            # Enter the action to take if the result is greater than 25
-            pass
+        if result > 25:
+            break
         print(str(number) + "x" + str(multiplier) + "=" + str(result))
 
         # Increment the appropriate variable
-        multi += 1
+        multiplier += 1
 
 multiplication_table(3)
 # Should print:
@@ -31,24 +30,33 @@ multiplication_table(3)
 # task 2
 """  Написати функцію, яка обчислює суму двох чисел.
 """
-
+def sum_of_two_numbers(number1, number2):
+    return number1 + number2
 
 # task 3
 """  Написати функцію, яка розрахує середнє арифметичне списку чисел.
 """
-
+def average_in_list(list_numbers):
+    return sum(list_numbers) / len(list_numbers)
 # task 4
 """  Написати функцію, яка приймає рядок та повертає його у зворотному порядку.
 """
+def reverse_the_string(string):
+    return string[::-1]
 
 # task 5
 """  Написати функцію, яка приймає список слів та повертає найдовше слово у списку.
 """
+def get_the_longest_word(list_of_words):
+     sorted_list = sorted(list_of_words, key=len, reverse=True)
+     return sorted_list[0]
 
 # task 6
 """  Написати функцію, яка приймає два рядки та повертає індекс першого входження другого рядка
-у перший рядок, якщо другий рядок є підрядком першого рядка, та -1, якщо другий рядок
+у перший рядок, якщо другий рядок є підрядком першого рядка,
+та -1, якщо другий рядок
 не є підрядком першого рядка."""
+
 def find_substring(str1, str2):
 
     return -1
