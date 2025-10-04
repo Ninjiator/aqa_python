@@ -69,11 +69,32 @@ str1 = "The quick brown fox jumps over the lazy dog"
 str2 = "cat"
 print(find_substring(str1, str2)) # поверне -1
 
-# task 7
-# task 8
-# task 9
-# task 10
 """  Оберіть будь-які 4 таски з попередніх домашніх робіт та
 перетворіть їх у 4 функції, що отримують значення та повертають результат.
 Обоязково документуйте функції та дайте зрозумілі імена змінним.
 """
+# task 7 function from homework_6_01
+def calculate_uniq_symbols_in_string(string:str) -> int:
+    """Func is calculating the unique symbols in a string, and returning amount as int."""
+    return len(set(string))
+
+print('Input any amount of symbols: ')
+user_input = input()
+print(f"Unique symbols in string : {calculate_uniq_symbols_in_string(user_input)}")
+
+# task 8 from homework_06_03
+def copy_str_from_list(original_list:list, list_of_strings:list) -> list:
+    """Function copy all members with type str from original list to list_of_strings."""
+    for k in original_list:
+        if type(k) == str:
+            list_of_strings.append(k)
+    return list_of_strings
+
+lst1 = ['1', '2', '3', True, 'False', 5, '6', 7, 8, 'Python', 9, 0, 'Lorem Ipsum']
+lst2 = []
+
+copy_str_from_list(lst1, lst2)
+print(f"Result of func copy_str_from_list -> {lst2}")
+
+# task 9
+# task 10
