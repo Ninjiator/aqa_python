@@ -57,9 +57,8 @@ def get_the_longest_word(list_of_words):
 та -1, якщо другий рядок
 не є підрядком першого рядка."""
 
-def find_substring(str1, str2):
-
-    return -1
+def find_substring(str1, str2) -> int:
+    return str1.find(str2)
 
 str1 = "Hello, world!"
 str2 = "world"
@@ -122,6 +121,15 @@ print('Result of func sum_of_even_numbers is ', sum_of_even_numbers(list_of_numb
 # task 10 from homework_05_01
 
 def search_cars_by_criteria(cars_info:dict, searched_params:tuple, amount_of_results:int=5) -> list:
+    """
+    Functions searched for cars that meet specified criteria
+    and displays the specified number of results sorted by price
+
+    :param cars_info: dict of cars where value is a tuple of brand data
+    :param searched_params: tuple(year_min, engine_min, price_max)
+    :param amount_of_results: expected amount of results
+    :return: list of tuples fall under required criteria
+    """
     year_min, engine_min, price_max = searched_params
 
     filtered_cars = sorted([
