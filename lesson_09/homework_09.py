@@ -15,14 +15,14 @@ class Diamond:
                 raise AttributeError(f'angle_a should be bigger that zero')
             else:
                 object.__setattr__(self, name, value)
-                self.angle_b = 180.0 - self.angle_a
-        elif name == 'angle_b' and value + self.angle_a > 180:
+                self.__angle_b = 180.0 - self.angle_a
+        elif name == '__angle_b' and value + self.angle_a > 180:
             raise AttributeError(f'angle_a + angle_a cannot be > 180')
         else:
             object.__setattr__(self, name, value)
 
     def __str__(self):
-        return f'side is {self.side}, angle_a is {self.angle_a}, angle_b is {self.angle_b}'
+        return f'side is {self.side}, angle_a is {self.angle_a}, angle_b is {self.__angle_b}'
 
 
 d_1 = Diamond(5, 120)
@@ -31,5 +31,5 @@ print('-' * 80)
 d_2 = Diamond(1, 10)
 print('d_2 - ',d_2)
 print('-' * 80)
-d_2.angle_b = 180.0
+d_2.__angle_b = 180.0
 print('d_2 - ', d_2)
