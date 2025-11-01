@@ -3,7 +3,7 @@
 і вам потрібно реалізувати тести на функцію для логування подій в системі входу.
 Дано функцію, напишіть набір тестів для неї.
 """
-
+import pytest
 import logging
 
 def log_event(username: str, status: str):
@@ -36,3 +36,12 @@ def log_event(username: str, status: str):
         logger.warning(log_message)
     else:
         logger.error(log_message)
+
+
+@pytest.mark.parametrize('input, expected', [
+    (('oleksii', 'sucess'), True),
+
+    (('oleksii', 'expired'), False),
+])
+def test_log_event(input, expected):
+    assert log_event(input) == expected
