@@ -5,6 +5,17 @@
 """
 
 import logging
+import pytest
+
+
+LOG_FILE = 'login_system.log'
+
+logging.basicConfig(
+        filename=LOG_FILE,
+        level=logging.INFO,
+        format = '%(asctime)s - %(levelname)s - %(message)s',
+        force=True
+    )
 
 def log_event(username: str, status: str):
     """
@@ -22,11 +33,6 @@ def log_event(username: str, status: str):
 
     # Створення та налаштування логера
 
-    logging.basicConfig(
-        filename='login_system.log',
-        level=logging.INFO,
-        format='%(asctime)s - %(message)s'
-        )
     logger = logging.getLogger("log_event")
 
     # Логування події
@@ -36,3 +42,17 @@ def log_event(username: str, status: str):
         logger.warning(log_message)
     else:
         logger.error(log_message)
+
+
+@pytest.mark.parametrize("username, status, expected_level", [
+
+    ("admin", "expired", "WARNING"),
+    ("president", "success", "INFO"),
+    ("Mario", "failed", "ERROR")
+])
+
+def test_log_event(username: str, status: str, expected_level: str):
+    log_event(username, status)
+    with open("login_system.log", "r") as log_file:
+        log = log_file.readlines()
+        assert expected_level in log[-1]
