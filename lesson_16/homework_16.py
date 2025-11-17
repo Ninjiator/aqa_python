@@ -2,6 +2,7 @@ import json
 import pathlib
 import logging
 import csv
+import xml.etree.ElementTree as ET
 
 #task 1
 def union_for_csv(path_to_csv_1, path_to_csv_2):
@@ -44,8 +45,24 @@ def is_json_valid(file_dir):
                     f"(line {e.lineno}, column {e.colno})")
 
 #task 3
-def search_in_group(group, file):
-    
+def search_in_group(group_number, file):
+    tree = ET.parse(file)
+    root = tree.getroot()
+    for el in root.findall("group"):
+        number_el = el.find("number")
+        if number_el is not None and number_el.text == str(group_number):
+            print(number_el.tag, number_el.text)
+            timing_exbytes = el.find("timingExbytes")
+            if timing_exbytes is not None:
+                incoming = timing_exbytes.find("incoming")
+                print(incoming.tag, incoming.text)
+                logger.info(f"Incoming timing bytes:{incoming.tag}, {incoming.text}")
+            else:
+                return
+        else:
+            continue
+
+
 
 if __name__ == "__main__":
     # task 1
@@ -55,15 +72,38 @@ if __name__ == "__main__":
     union_for_csv(csv_1_path, csv_2_path)
 
     # task 2
+    #Logger ERROR into the file for task 2
+
+
+    #Logger INFO into the console for task 3
+
     logging.basicConfig(
         filename="json_Buhai.log",
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s"
+        level=logging.ERROR,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        filemode='w'
     )
     logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)  # Logger for task 3 into console
+    console_format = logging.Formatter(
+        "%(asctime)s - %(levelname)s - %(message)s"
+    )
+    console_handler.setFormatter(console_format)
+
+    logger.addHandler(console_handler)
 
     dir_with_jsons = pathlib.Path(__file__).parent / "task_2_json"
     is_json_valid(dir_with_jsons)
 
 
     #task 3
+    xml_path = pathlib.Path(__file__).parent / "task_3_xml" / "groups.xml"
+    search_in_group(0, xml_path)
+    search_in_group(4, xml_path)
+    search_in_group(2, xml_path)
+    search_in_group(5, xml_path)
+    search_in_group(1, xml_path)
+    search_in_group(10, xml_path)
