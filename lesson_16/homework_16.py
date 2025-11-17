@@ -8,10 +8,8 @@ import xml.etree.ElementTree as ET
 def union_for_csv(path_to_csv_1, path_to_csv_2):
     with open(path_to_csv_1, 'r') as csvfile:
         csv_1 = list(csv.reader(csvfile))
-        print(csv_1)
     with open(path_to_csv_2, 'r') as csvfile:
         csv_2 = list(csv.reader(csvfile))
-        print(csv_2)
 
     csv_header = csv_1[0]
     csv_result = []
@@ -24,7 +22,6 @@ def union_for_csv(path_to_csv_1, path_to_csv_2):
     csv_result = [list(t) for t in csv_result_set]
 
     csv_result.insert(0, csv_header)
-    print(csv_result)
     with open("results_Buhai.csv", "w", newline='') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerows(csv_result)
@@ -40,7 +37,7 @@ def is_json_valid(file_dir):
                     data = json.load(json_file)
 
             except json.JSONDecodeError as e:
-                logger.error(
+                error_logger.error(
                     f"Invalid JSON in file '{path_to_json}': {e.msg} "
                     f"(line {e.lineno}, column {e.colno})")
 
@@ -51,12 +48,10 @@ def search_in_group(group_number, file):
     for el in root.findall("group"):
         number_el = el.find("number")
         if number_el is not None and number_el.text == str(group_number):
-            print(number_el.tag, number_el.text)
             timing_exbytes = el.find("timingExbytes")
             if timing_exbytes is not None:
                 incoming = timing_exbytes.find("incoming")
-                print(incoming.tag, incoming.text)
-                logger.info(f"Incoming timing bytes:{incoming.tag}, {incoming.text}")
+                info_logger.info(f"incoming.tag:{incoming.tag}, incoming.text {incoming.text}")
             else:
                 return
         else:
@@ -73,27 +68,32 @@ if __name__ == "__main__":
 
     # task 2
     #Logger ERROR into the file for task 2
+    error_logger = logging.Logger("error_logger_json")
+    error_logger.setLevel(logging.ERROR)
+
+    file_handler = logging.FileHandler("json_Buhai.log", encoding="utf-8")
+    file_handler.setLevel(logging.ERROR)
+
+    error_loggers_formater = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    file_handler.setFormatter(error_loggers_formater)
+    error_logger.addHandler(file_handler)
+    error_logger.propagate = False
 
 
     #Logger INFO into the console for task 3
-
-    logging.basicConfig(
-        filename="json_Buhai.log",
-        level=logging.ERROR,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        filemode='w'
-    )
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
+    info_logger = logging.getLogger("info_logger_xml")
+    info_logger.setLevel(logging.INFO)
 
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)  # Logger for task 3 into console
-    console_format = logging.Formatter(
-        "%(asctime)s - %(levelname)s - %(message)s"
-    )
-    console_handler.setFormatter(console_format)
+    console_handler.setLevel(logging.INFO)
 
-    logger.addHandler(console_handler)
+    info_loggers_formater = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+    console_handler.setFormatter(info_loggers_formater)
+    info_logger.addHandler(console_handler)
+    info_logger.propagate = False
+
+
 
     dir_with_jsons = pathlib.Path(__file__).parent / "task_2_json"
     is_json_valid(dir_with_jsons)
