@@ -63,7 +63,7 @@ def try_except_decorator(func):
     def wrapper(*args, **kwargs):
         try:
             func(*args, **kwargs)
-        except Exception:
-            print('Exception raised be aware')
+        except Exception as e:
+            print(f'Exception - {e} is raised, be aware')
         return None
     return wrapper
