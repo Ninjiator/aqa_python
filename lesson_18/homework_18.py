@@ -7,6 +7,7 @@ def generator_1(number:int):
         if i % 2 == 0:
             yield i
         i += 1
+    raise StopIteration
 
 def generator_fibo(number:int):
     a = 1
