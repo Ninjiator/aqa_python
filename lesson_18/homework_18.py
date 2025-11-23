@@ -7,16 +7,16 @@ def generator_1(number:int):
         if i % 2 == 0:
             yield i
         i += 1
-    raise StopIteration
 
 def generator_fibo(number:int):
     a = 1
     b = 1
-    while True:
+    while number > 0:
         yield a
         summ = a + b
         a = b
         b = summ
+        number -= 1
 
 #task 2
 class ReverselistGenerator:
@@ -62,8 +62,11 @@ def decorator_for_func_logging(func):
 def try_except_decorator(func):
     def wrapper(*args, **kwargs):
         try:
-            func(*args, **kwargs)
+            result = func(*args, **kwargs)
+            return result
         except Exception:
             print('Exception raised be aware')
         return None
     return wrapper
+
+
