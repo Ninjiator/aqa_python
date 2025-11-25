@@ -4,9 +4,9 @@ base_url = "http://127.0.0.1:8080"
 
 post_path = '/upload'
 
-with open("images.jpeg", "rb") as image_file:
+with open("image.jpeg", "rb") as image_file:
     image_data = image_file.read()
-    file = {"image" : ('images.jpeg', image_data, "image/jpeg")}
+    file = {"image" : ('image.jpeg', image_data, "image/jpeg")}
 response_post = requests.post(base_url + post_path, files = file)
 print(f'Post results: Status is {response_post.status_code},\nText: {response_post.text}')
 
