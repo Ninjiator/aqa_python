@@ -33,7 +33,7 @@ class Relation(Base):
 3. Оновлення та видалення даних: 
 -Реалізуйте можливість оновлення даних про студентів або курси, а також видалення студентів з бази даних."""
 
-def init_students(stud_num : int, list_of_courses : list[Course]) -> list[Student]:
+def init_students(stud_num : int) -> list[Student]:
     fake = Faker()
     stud_list = []
     for s in range(stud_num):
@@ -54,14 +54,14 @@ if __name__ == '__main__':
     SessionLocal = sessionmaker(bind=engine)
     session = SessionLocal()
 
-    list_of_students = init_students(10)
-
     course_1 = Course(course_name='Python for AQA')
     course_2 = Course(course_name='C++ for GameDev')
     course_3 = Course(course_name='Human Resources')
     course_4 = Course(course_name='Data Analysis')
     course_5 = Course(course_name='DevOps')
 
+
+    list_of_students = init_students(5)
 
     session.add_all(list_of_students)
     session.add_all([course_1, course_2, course_3, course_4, course_5])
