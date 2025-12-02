@@ -22,8 +22,8 @@ class Course(Base):
 
 class Relation(Base):
     __tablename__ = 'relations'
-    student_id = Column(Integer, ForeignKey('students.student_id'), primary_key=True)
-    course_id = Column(Integer, ForeignKey('courses.course_id'), primary_key=True)
+    s_id = Column(Integer, ForeignKey('students.student_id'), primary_key=True)
+    c_id = Column(Integer, ForeignKey('courses.course_id'), primary_key=True)
 
 """"
 1. Виконання базових операцій: Напишіть програму, яка додає нового студента до бази даних та додає його до певного курсу. 
@@ -44,37 +44,30 @@ def init_students(stud_num : int) -> list[Student]:
 def init_relations(courses : list[Course], students : list[Student]) -> list[Relation]:
     relations = []
     for student in students:
-        r = Relation(student_id=random.choice(students).student_id, course_id=random.choice(courses).course_id)
+        r = Relation(s_id=student.student_id, c_id=random.choice(courses).course_id)
         relations.append(r)
     return relations
 
 if __name__ == '__main__':
-
     Base.metadata.create_all(engine)
     SessionLocal = sessionmaker(bind=engine)
     session = SessionLocal()
 
-    course_1 = Course(course_name='Python for AQA')
-    course_2 = Course(course_name='C++ for GameDev')
-    course_3 = Course(course_name='Human Resources')
-    course_4 = Course(course_name='Data Analysis')
-    course_5 = Course(course_name='DevOps')
 
-
-    list_of_students = init_students(5)
-
-    session.add_all(list_of_students)
-    session.add_all([course_1, course_2, course_3, course_4, course_5])
+    list_of_courses = [Course(course_name='Python for AQA'),
+                       Course(course_name='C++ for GameDev'),
+                       Course(course_name='Human Resources'),
+                       Course(course_name='Data Analysis'),
+                       Course(course_name='DevOps')]
+    session.add_all(list_of_courses)
     session.commit()
 
-    list_of_courses = session.query(Course).all()
 
-    relation_1 = Relation(student_id=(random.choice(list_of_students)).student_id,
-                          course_id=list_of_courses[0].course_id)
-
-    relation_2 = Relation(student_id=(random.choice(list_of_students)).student_id,
-                          course_id=(random.choice(list_of_courses)).course_id)
+    list_of_students = init_students(20)
+    session.add_all(list_of_students)
+    session.commit()
 
 
-    session.add_all([relation_1, relation_2])
+    list_of_relations = init_relations(list_of_courses, list_of_students)
+    session.add_all(list_of_relations)
     session.commit()
