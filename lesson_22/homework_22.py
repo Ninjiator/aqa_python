@@ -1,29 +1,11 @@
-import faker
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from Models.models import Student, Course, Relation, Base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import ForeignKey
+from sqlalchemy import create_engine
 from faker import Faker
 import random
 
 connection_string = "sqlite:///C:/Oleksii_Docs/aqa_python/lesson_22/sqllite_db"
 engine = create_engine(connection_string)
-Base = declarative_base()
-
-class Student(Base):
-    __tablename__ = 'students'
-    student_id = Column(Integer, primary_key=True, autoincrement=True)
-    student_name = Column(String)
-
-class Course(Base):
-    __tablename__ = 'courses'
-    course_id = Column(Integer, primary_key=True)
-    course_name = Column(String)
-
-class Relation(Base):
-    __tablename__ = 'relations'
-    s_id = Column(Integer, ForeignKey('students.student_id'), primary_key=True)
-    c_id = Column(Integer, ForeignKey('courses.course_id'), primary_key=True)
 
 """"
 1. Виконання базових операцій: Напишіть програму, яка додає нового студента до бази даних та додає його до певного курсу. 
@@ -41,6 +23,14 @@ def init_students(stud_num : int) -> list[Student]:
         stud_list.append(student)
     return stud_list
 
+def init_courses() -> list[Course]:
+    l_courses = [Course(course_name='Python for AQA'),
+                       Course(course_name='C++ for GameDev'),
+                       Course(course_name='Human Resources'),
+                       Course(course_name='Data Analysis'),
+                       Course(course_name='DevOps')]
+    return l_courses
+
 def init_relations(courses : list[Course], students : list[Student]) -> list[Relation]:
     relations = []
     for student in students:
@@ -48,25 +38,19 @@ def init_relations(courses : list[Course], students : list[Student]) -> list[Rel
         relations.append(r)
     return relations
 
+
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
     SessionLocal = sessionmaker(bind=engine)
     session = SessionLocal()
 
-
-    list_of_courses = [Course(course_name='Python for AQA'),
-                       Course(course_name='C++ for GameDev'),
-                       Course(course_name='Human Resources'),
-                       Course(course_name='Data Analysis'),
-                       Course(course_name='DevOps')]
-    session.add_all(list_of_courses)
-    session.commit()
-
-
     list_of_students = init_students(20)
     session.add_all(list_of_students)
     session.commit()
 
+    list_of_courses = init_courses()
+    session.add_all(list_of_courses)
+    session.commit()
 
     list_of_relations = init_relations(list_of_courses, list_of_students)
     session.add_all(list_of_relations)
