@@ -25,41 +25,29 @@ def auth_client(cars_client):
     return cars_client
 
 
+@pytest.fixture(scope="session")
+def test_logger():
+    logger = logging.getLogger("tests")
+    logger.setLevel(logging.ERROR)
+    logger.propagate = False
 
-@pytest.fixture(scope="session", autouse=True)
-def file_logger():
-    #file logger
-    file_error_logger = logging.Logger('file_error_logger')
-    file_error_logger.setLevel(logging.ERROR)
+    # щоб не додавати хендлери повторно (дублікати)
+    if logger.handlers:
+        return logger
 
-    file_error_handler = logging.FileHandler("test_search.log", encoding="utf-8")
-    file_error_handler.setLevel(logging.ERROR)
-    
-    formater = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    
-    file_error_handler.setFormatter(formater)
-    file_error_logger.addHandler(file_error_handler)
+    fmt = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
-    return file_error_logger
+    # file
+    fh = logging.FileHandler("test_search.log", encoding="utf-8", mode="a")
+    fh.setLevel(logging.ERROR)
+    fh.setFormatter(fmt)
 
+    # console
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.ERROR)
+    ch.setFormatter(fmt)
 
-@pytest.fixture(scope="session", autouse=True)
-def console_logger():
-    console_error_logger = logging.getLogger('console_error_logger')
-    console_error_logger.setLevel(logging.ERROR)
+    logger.addHandler(fh)
+    logger.addHandler(ch)
 
-    console_error_handler = logging.StreamHandler()
-    console_error_handler.setLevel(logging.ERROR)
-
-    formater = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-
-    console_error_handler.setFormatter(formater)
-    console_error_logger.addHandler(console_error_handler)
-
-    return console_error_logger
-
-
-@pytest.fixture()
-def logg_all(info_to_log : str, console_logger, file_logger):
-    console_logger.error(info_to_log)
-    file_logger.error(info_to_log)
+    return logger
