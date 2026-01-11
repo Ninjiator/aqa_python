@@ -1,42 +1,71 @@
 from HillelAuto.Cores.RegistrationFormLocators import RegistrationFormsLocators
 from HillelAuto.Pages.HomePage import HomePage
 from playwright.sync_api import expect
+from faker import Faker
 
 class RegistrationForm:
 
     def __init__(self, home_page: HomePage):
         self.home_page = home_page
+        self.page = home_page.page
         self.form_locators = RegistrationFormsLocators()
 
 
     def open_form(self):
-        self.home_page.page.locator(self.home_page.sign_up_button_locator).click()
-        self.home_page.page.wait_for_timeout(1000)
+        self.page.locator(self.home_page.sign_up_button).click()
+        self.page.wait_for_timeout(1000)
 
     def fill_user_name(self, user_name):
-        pass
+        self.page.locator(self.form_locators.user_name).fill(user_name, timeout=1000)
 
     def fill_user_last_name(self, user_last_name):
-        pass
+        self.page.locator(self.form_locators.user_last_name).fill(user_last_name, timeout=1000)
 
     def fill_user_mail(self, user_mail):
-        pass
+        self.page.locator(self.form_locators.user_mail).fill(user_mail, timeout=1000)
 
     def fill_user_password(self, user_password):
-        pass
+        self.page.locator(self.form_locators.user_password).fill(user_password, timeout=1000)
+
+    def fill_user_password_repeat(self, user_password):
+        self.page.locator(self.form_locators.user_password_repeat).fill(user_password, timeout=1000)
 
     def is_registration_form_opened(self) -> bool:
         try:
-            expect(self.home_page.page.locator(self.form_locators.registration_text_locator)).to_have_text('Registration', timeout=1000)
+            expect(self.page.locator(self.form_locators.registration_text_locator)).to_have_text('Registration', timeout=1000)
             return True
         except AssertionError:
             return False
 
-    def do_registration(self):
-        # self.fill_user_name()
-        # self.fill_user_last_name()
-        # self.fill_user_mail()
-        # self.fill_user_password()
+    def do_registration(self, user_name, user_last_name, user_mail, user_password, user_password_repeat = None):
+        self.fill_user_name(user_name)
+        self.fill_user_last_name(user_last_name)
+        self.fill_user_mail(user_mail)
+        self.fill_user_password(user_password)
 
-    def is_registration_done(self):
-        pass
+        if user_password_repeat is None:
+            self.fill_user_password_repeat(user_password)
+        else:
+            self.fill_user_password_repeat(user_password_repeat)
+
+
+        if not self.page.get_by_text("Register").is_disabled():
+            self.page.get_by_text("Register").click(timeout=2000)
+
+        self.page.wait_for_timeout(1000)
+
+    def is_registration_successful(self):
+        try:
+            expect(self.page.locator(self.form_locators.my_profile)).to_have_text('My profile', timeout=1000)
+            return True
+        except AssertionError:
+            return False
+
+
+    def is_registration_failed_by_password(self):
+        try:
+            expect(self.page.get_by_text(self.form_locators.error_password_text)).to_be_visible(timeout=1000)
+            return True
+        except AssertionError:
+            return False
+
