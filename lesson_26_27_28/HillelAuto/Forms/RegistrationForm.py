@@ -1,18 +1,17 @@
 from HillelAuto.Cores.RegistrationFormLocators import RegistrationFormsLocators
-from playwright.sync_api import Page
+from HillelAuto.Pages.HomePage import HomePage
+from playwright.sync_api import expect
 
 class RegistrationForm:
 
-    def __init__(self, page: Page):
-        self.page = page
-        self.base_url = "https://guest:welcome2qauto@qauto2.forstudy.space/"
-        self.sign_up_button_locator = "button.btn-primary"
+    def __init__(self, home_page: HomePage):
+        self.home_page = home_page
         self.form_locators = RegistrationFormsLocators()
 
 
     def open_form(self):
-        self.page.goto(self.base_url)
-        self.page.locator(self.sign_up_button_locator).click()
+        self.home_page.page.locator(self.home_page.sign_up_button_locator).click()
+        self.home_page.page.wait_for_timeout(1000)
 
     def fill_user_name(self, user_name):
         pass
@@ -26,8 +25,18 @@ class RegistrationForm:
     def fill_user_password(self, user_password):
         pass
 
+    def is_registration_form_opened(self) -> bool:
+        try:
+            expect(self.home_page.page.locator(self.form_locators.registration_text_locator)).to_have_text('Registration', timeout=1000)
+            return True
+        except AssertionError:
+            return False
+
     def do_registration(self):
-        pass
+        # self.fill_user_name()
+        # self.fill_user_last_name()
+        # self.fill_user_mail()
+        # self.fill_user_password()
 
     def is_registration_done(self):
         pass

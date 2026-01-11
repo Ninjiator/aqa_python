@@ -9,9 +9,10 @@ def pw_page():
         page = browser.new_page()
         yield page
 
-# def my_profile_page(pw_page):
-#     home_page = HomePage(pw_page)
-#     home_page.open_page()
-#
-#     if home_page.is_home_page_opened():
-#         return RegistrationPage(pw_page).do_registration()
+@pytest.fixture(scope='session')
+def home_page(pw_page):
+    home_page = HomePage(pw_page)
+    home_page.open_page()
+    return home_page
+
+
