@@ -1,19 +1,16 @@
-from playwright.sync_api import sync_playwright
-
-from HillelAuto.HomePage import HomePage
+from HillelAuto.Pages.HomePage import HomePage
 
 
-def test_smoke_before_sign_up():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+def test_smoke_home_page(pw_page):
 
-        page = browser.new_page()
-        home_page = HomePage(page)
+        home_page = HomePage(pw_page)
         home_page.open_page()
         assert home_page.is_home_page_opened() is True, "Home Page is opened"
 
-        home_page.click_on_sign_up()
 
-        assert home_page.is_registration_form_opened() is True, "Registration form is opened"
+def test_sign_up_form(pw_page):
+    home_page = HomePage(pw_page)
+    home_page.open_page()
+    home_page.click_on_sign_up()
 
-
+    assert home_page.is_registration_form_opened() is True, "Registration form is opened"
