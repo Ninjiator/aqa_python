@@ -9,10 +9,18 @@ def pw_page():
         page = browser.new_page()
         yield page
 
-@pytest.fixture(scope='session')
-def home_page(pw_page):
-    home_page = HomePage(pw_page)
+@pytest.fixture()
+def home_page(brand_new_page):
+    home_page = HomePage(brand_new_page)
     home_page.open_page()
     return home_page
 
+@pytest.fixture()
+def brand_new_page(pw_page):
+    browser = pw_page.context.browser
+    context = browser.new_context()
+    page = context.new_page()
 
+    yield page
+
+    context.close()

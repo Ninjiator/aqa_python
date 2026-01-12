@@ -12,7 +12,7 @@ class RegistrationForm:
 
 
     def open_form(self):
-        self.page.locator(self.home_page.sign_up_button).click()
+        self.page.locator(self.home_page.sign_up_button_locator).click()
         self.page.wait_for_timeout(1000)
 
     def fill_user_name(self, user_name):
@@ -48,10 +48,8 @@ class RegistrationForm:
         else:
             self.fill_user_password_repeat(user_password_repeat)
 
-
-        if not self.page.get_by_text("Register").is_disabled():
-            self.page.get_by_text("Register").click(timeout=2000)
-
+        if self.page.locator(self.form_locators.register_button).is_enabled():
+            self.page.locator(self.form_locators.register_button).click(timeout=2000)
         self.page.wait_for_timeout(1000)
 
     def is_registration_successful(self):
@@ -62,10 +60,37 @@ class RegistrationForm:
             return False
 
 
-    def is_registration_failed_by_password(self):
+    def is_registration_failed_by_password_conditions(self):
         try:
             expect(self.page.get_by_text(self.form_locators.error_password_text)).to_be_visible(timeout=1000)
             return True
         except AssertionError:
             return False
 
+    def is_registration_failed_by_name_length(self):
+        try:
+            expect(self.page.get_by_text(self.form_locators.error_name_by_length)).to_be_visible(timeout=1000)
+            return True
+        except AssertionError:
+            return False
+
+    def is_registration_failed_invalid_name(self):
+        try:
+            expect(self.page.get_by_text(self.form_locators.error_name_invalid)).to_be_visible(timeout=1000)
+            return True
+        except AssertionError:
+            return False
+
+    def is_registration_failed_invalid_name_and_length(self):
+        try:
+            expect(self.page.get_by_text(self.form_locators.error_name_invalid) and self.page.get_by_text(self.form_locators.error_name_by_length)).to_be_visible(timeout=1000)
+            return True
+        except AssertionError:
+            return False
+
+    def is_registration_failed_incorrect_mail(self):
+        try:
+            expect(self.page.get_by_text(self.form_locators.error_mail_text)).to_be_visible(timeout=1000)
+            return True
+        except AssertionError:
+            return False
