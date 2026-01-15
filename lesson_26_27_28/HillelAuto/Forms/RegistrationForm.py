@@ -1,4 +1,5 @@
 from HillelAuto.Cores.RegistrationFormLocators import RegistrationHelper
+from HillelAuto.Cores.TestUser import TestUser
 from HillelAuto.Pages.HomePage import HomePage
 from playwright.sync_api import expect
 from faker import Faker
@@ -10,6 +11,11 @@ class RegistrationForm:
         self.page = home_page.page
         self.reg_helper = RegistrationHelper()
 
+        self.user = TestUser()
+        self.user_name = self.user.name
+        self.user_last_name = self.user.last_name
+        self.user_mail = self.user.mail
+        self.user_pass = self.user.password
 
     def open_form(self):
         self.page.locator(self.home_page.sign_up_button_locator).click()
@@ -37,20 +43,47 @@ class RegistrationForm:
         except AssertionError:
             return False
 
-    def do_registration(self, user_name, user_last_name, user_mail, user_password, user_password_repeat = None):
-        self.fill_user_name(user_name)
-        self.fill_user_last_name(user_last_name)
-        self.fill_user_mail(user_mail)
-        self.fill_user_password(user_password)
+    def do_registration(self, user_name = None,
+                        user_last_name = None,
+                        user_mail = None,
+                        user_password = None,
+                        user_password_repeat = None):
 
-        if user_password_repeat is None:
-            self.fill_user_password_repeat(user_password)
-        else:
-            self.fill_user_password_repeat(user_password_repeat)
-
+        self.fill_registration_fields(user_name, user_last_name, user_mail, user_password, user_password_repeat)
         if self.page.locator(self.reg_helper.register_button).is_enabled():
             self.page.locator(self.reg_helper.register_button).click(timeout=2000)
         self.page.wait_for_timeout(1000)
+
+    def fill_registration_fields(self, user_name,
+                                 user_last_name,
+                                 user_mail,
+                                 user_password,
+                                 user_password_repeat):
+        if user_name is None:
+            u_name = self.user.name
+            self.fill_user_name(u_name)
+        else:
+            self.fill_user_name(user_name)
+
+        if user_last_name is None:
+            u_last_name = self.user.last_name
+            self.fill_user_last_name(u_last_name)
+        else:
+            self.fill_user_last_name(user_last_name)
+
+        if user_mail is None:
+            u_mail = self.user.mail
+            self.fill_user_mail(u_mail)
+        else:
+            self.fill_user_mail(user_mail)
+
+        if user_password_repeat is None and user_password is not None:
+            self.fill_user_password(user_password)
+            self.fill_user_password_repeat(user_password)
+        if user_password_repeat is None and user_password is None:
+            u_password = self.user.password
+            self.fill_user_password(u_password)
+            self.fill_user_password_repeat(u_password)
 
     def is_registration_successful(self):
         try:

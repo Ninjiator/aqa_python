@@ -12,10 +12,8 @@ import pytest
 ])
 def test_negative_sign_up_password(home_page, password):
     registration_form = RegistrationForm(home_page)
-    test_user = TestUser()
-
     registration_form.open_form()
-    registration_form.do_registration(test_user.name, test_user.last_name, test_user.mail, password)
+    registration_form.do_registration(user_password = password)
     assert registration_form.is_registration_failed_by_password_conditions() == True, "Registration is failed due to password error"
 
 
@@ -25,10 +23,8 @@ def test_negative_sign_up_password(home_page, password):
 ])
 def test_negative_sign_up_name_length(home_page, name):
     registration_form = RegistrationForm(home_page)
-    test_user = TestUser()
-
     registration_form.open_form()
-    registration_form.do_registration(name, test_user.last_name, test_user.mail, test_user.password)
+    registration_form.do_registration(user_name = name)
     assert registration_form.is_registration_failed_by_name_length() == True, "Registration is failed due to name length"
 
 @pytest.mark.parametrize("name", [
@@ -38,10 +34,8 @@ def test_negative_sign_up_name_length(home_page, name):
 ])
 def test_negative_sign_up_name_invalid(home_page, name):
     registration_form = RegistrationForm(home_page)
-    test_user = TestUser()
-
     registration_form.open_form()
-    registration_form.do_registration(name, test_user.last_name, test_user.mail, test_user.password)
+    registration_form.do_registration(user_name = name)
     assert registration_form.is_registration_failed_invalid_name() == True, "Registration is failed due to invalid name"
 
 
@@ -51,10 +45,8 @@ def test_negative_sign_up_name_invalid(home_page, name):
 ])
 def test_negative_sign_up_invalid_name_and_length(home_page, name):
     registration_form = RegistrationForm(home_page)
-    test_user = TestUser()
-
     registration_form.open_form()
-    registration_form.do_registration(name, test_user.last_name, test_user.mail, test_user.password)
+    registration_form.do_registration(user_name = name)
     assert registration_form.is_registration_failed_invalid_name_and_length() == True, "Registration is failed due to invalid name and name length"
 
 
@@ -64,9 +56,7 @@ def test_negative_sign_up_invalid_name_and_length(home_page, name):
 ])
 def test_negative_sign_up_mail(home_page, mail):
     registration_form = RegistrationForm(home_page)
-    test_user = TestUser()
-
     registration_form.open_form()
-    registration_form.do_registration(test_user.name, test_user.last_name, mail, test_user.password)
+    registration_form.do_registration(user_mail = mail)
     assert registration_form.is_registration_failed_incorrect_mail() == True, "Registration is failed due to incorrect email"
 
