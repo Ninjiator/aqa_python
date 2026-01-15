@@ -1,6 +1,6 @@
 
 
-class RegistrationFormsLocators:
+class RegistrationHelper:
 
     registration_text_locator = ".modal-title"
 
