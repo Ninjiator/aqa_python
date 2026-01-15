@@ -1,8 +1,7 @@
-from HillelAuto.Cores.RegistrationFormLocators import RegistrationHelper
+from HillelAuto.Cores.RegistrationHelper import RegistrationHelper
 from HillelAuto.Cores.TestUser import TestUser
 from HillelAuto.Pages.HomePage import HomePage
 from playwright.sync_api import expect
-from faker import Faker
 
 class RegistrationForm:
 
@@ -10,12 +9,8 @@ class RegistrationForm:
         self.home_page = home_page
         self.page = home_page.page
         self.reg_helper = RegistrationHelper()
-
         self.user = TestUser()
-        self.user_name = self.user.name
-        self.user_last_name = self.user.last_name
-        self.user_mail = self.user.mail
-        self.user_pass = self.user.password
+
 
     def open_form(self):
         self.page.locator(self.home_page.sign_up_button_locator).click()

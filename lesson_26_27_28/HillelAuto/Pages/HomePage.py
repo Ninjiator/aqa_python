@@ -2,13 +2,7 @@ from playwright.sync_api import Page, expect
 
 
 class HomePage:
-    #locators
     sign_up_button_locator = "role=button[name='Sign up']"
-
-    #after sign up done
-    #__my_profile_button_loc
-    
-
 
     def __init__(self, page: Page):
         self.page = page

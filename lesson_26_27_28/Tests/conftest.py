@@ -1,3 +1,4 @@
+from HillelAuto.Forms.RegistrationForm import RegistrationForm
 from HillelAuto.Pages.HomePage import HomePage
 from playwright.sync_api import Page, sync_playwright
 import pytest
@@ -20,7 +21,5 @@ def brand_new_page(pw_page):
     browser = pw_page.context.browser
     context = browser.new_context()
     page = context.new_page()
-
     yield page
-
     context.close()
