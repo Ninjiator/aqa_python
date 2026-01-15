@@ -9,8 +9,9 @@ class HomePage:
         self.base_url = "https://guest:welcome2qauto@qauto2.forstudy.space/"
         self.url = self.base_url
 
-    def open_page(self) -> None:
+    def open_page(self):
         self.page.goto(self.url)
+        return self
 
     def is_home_page_opened(self) -> bool:
         try:

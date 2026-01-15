@@ -1,4 +1,4 @@
-from HillelAuto.Forms.RegistrationForm import RegistrationForm
+from HillelAuto.Forms.LoginForm import LoginForm
 from HillelAuto.Pages.HomePage import HomePage
 from playwright.sync_api import Page, sync_playwright
 import pytest
@@ -23,3 +23,8 @@ def brand_new_page(pw_page):
     page = context.new_page()
     yield page
     context.close()
+
+@pytest.fixture(scope="session")
+def authorized_page(home_page):
+    login_form = LoginForm(home_page).open_form().do_login()
+    return login_form
