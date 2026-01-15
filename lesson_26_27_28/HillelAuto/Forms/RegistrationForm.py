@@ -20,6 +20,7 @@ class RegistrationForm:
     def open_form(self):
         self.page.locator(self.home_page.sign_up_button_locator).click()
         self.page.wait_for_timeout(1000)
+        return self
 
     def fill_user_name(self, user_name):
         self.page.locator(self.reg_helper.user_name).fill(user_name, timeout=1000)
@@ -53,6 +54,7 @@ class RegistrationForm:
         if self.page.locator(self.reg_helper.register_button).is_enabled():
             self.page.locator(self.reg_helper.register_button).click(timeout=2000)
         self.page.wait_for_timeout(1000)
+        return self
 
     def fill_registration_fields(self, user_name,
                                  user_last_name,
