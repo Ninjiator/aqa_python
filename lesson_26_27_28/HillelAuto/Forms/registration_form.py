@@ -1,6 +1,8 @@
-from HillelAuto.Cores.RegistrationHelper import RegistrationHelper
-from HillelAuto.Cores.TestUser import TestUser
-from HillelAuto.Pages.HomePage import HomePage
+import allure
+
+from HillelAuto.Cores.registration_helper import RegistrationHelper
+from HillelAuto.Cores.user import TestUser
+from HillelAuto.Pages.home_page import HomePage
 from playwright.sync_api import expect
 
 class RegistrationForm:
@@ -11,24 +13,29 @@ class RegistrationForm:
         self.reg_helper = RegistrationHelper()
         self.user = TestUser()
 
-
+    @allure.step("Open registration form")
     def open_form(self):
         self.page.locator(self.home_page.sign_up_button_locator).click()
         self.page.wait_for_timeout(1000)
         return self
 
+    @allure.step("Filing user name field")
     def fill_user_name(self, user_name):
         self.page.locator(self.reg_helper.user_name).fill(user_name, timeout=1000)
 
+    @allure.step("Filing user last name field")
     def fill_user_last_name(self, user_last_name):
         self.page.locator(self.reg_helper.user_last_name).fill(user_last_name, timeout=1000)
 
+    @allure.step("Filing user mail field")
     def fill_user_mail(self, user_mail):
         self.page.locator(self.reg_helper.user_mail).fill(user_mail, timeout=1000)
 
+    @allure.step("Filing user password field")
     def fill_user_password(self, user_password):
         self.page.locator(self.reg_helper.user_password).fill(user_password, timeout=1000)
 
+    @allure.step("Filing user password repeat field")
     def fill_user_password_repeat(self, user_password):
         self.page.locator(self.reg_helper.user_password_repeat).fill(user_password, timeout=1000)
 
@@ -47,7 +54,8 @@ class RegistrationForm:
 
         self.fill_registration_fields(user_name, user_last_name, user_mail, user_password, user_password_repeat)
         if self.page.locator(self.reg_helper.register_button).is_enabled():
-            self.page.locator(self.reg_helper.register_button).click(timeout=2000)
+            with allure.step("Click on enabled Register button"):
+                self.page.locator(self.reg_helper.register_button).click(timeout=2000)
         self.page.wait_for_timeout(1000)
         return self
 

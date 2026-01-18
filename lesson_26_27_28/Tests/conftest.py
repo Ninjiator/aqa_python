@@ -1,5 +1,7 @@
-from HillelAuto.Forms.LoginForm import LoginForm
-from HillelAuto.Pages.HomePage import HomePage
+import allure
+
+from HillelAuto.Forms.login_form import LoginForm
+from HillelAuto.Pages.home_page import HomePage
 from playwright.sync_api import Page, sync_playwright
 import pytest
 
@@ -13,7 +15,8 @@ def pw_page():
 @pytest.fixture()
 def home_page(brand_new_page):
     home_page = HomePage(brand_new_page)
-    home_page.open_page()
+    with allure.step("Open Home Page"):
+        home_page.open_page()
     return home_page
 
 @pytest.fixture()

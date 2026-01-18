@@ -1,5 +1,5 @@
 from playwright.sync_api import Page
-from HillelAuto.Forms.LoginForm import LoginForm
+from HillelAuto.Forms.login_form import LoginForm
 
 class MyProfilePage:
 
