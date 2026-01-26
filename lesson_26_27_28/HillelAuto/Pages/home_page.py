@@ -18,7 +18,7 @@ class HomePage:
 
     def is_home_page_opened(self) -> bool:
         try:
-            expect(self.page.locator(self.sign_up_button_locator)).to_have_text('Sign up', timeout=1000)
+            expect(self.page.locator(self.sign_up_button_locator)).to_have_text('Sign up')
             if self.page.url == self.url:
                 return True
             else:
@@ -30,7 +30,7 @@ class HomePage:
     def click_on_sign_up(self) -> None:
         sign_up = self.page.locator(self.sign_up_button_locator)
         sign_up.click()
-        self.page.wait_for_timeout(1000)
+        #self.page.wait_for_timeout(1000)
 
 
 

@@ -19,7 +19,7 @@ class LoginForm:
     @allure.step("Open Login form")
     def open_form(self):
         self.page.locator(self.sign_in_button_locator).click()
-        self.page.wait_for_timeout(1000)
+        #self.page.wait_for_timeout(1000)
         return self
 
 
