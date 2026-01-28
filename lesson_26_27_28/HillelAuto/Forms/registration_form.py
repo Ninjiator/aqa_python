@@ -16,32 +16,32 @@ class RegistrationForm:
     @allure.step("Open registration form")
     def open_form(self):
         self.page.locator(self.home_page.sign_up_button_locator).click()
-        self.page.wait_for_timeout(1000)
+        #self.page.wait_for_timeout(1000)
         return self
 
     @allure.step("Filing user name field")
     def fill_user_name(self, user_name):
-        self.page.locator(self.reg_helper.user_name).fill(user_name, timeout=1000)
+        self.page.locator(self.reg_helper.user_name).fill(user_name)
 
     @allure.step("Filing user last name field")
     def fill_user_last_name(self, user_last_name):
-        self.page.locator(self.reg_helper.user_last_name).fill(user_last_name, timeout=1000)
+        self.page.locator(self.reg_helper.user_last_name).fill(user_last_name)
 
     @allure.step("Filing user mail field")
     def fill_user_mail(self, user_mail):
-        self.page.locator(self.reg_helper.user_mail).fill(user_mail, timeout=1000)
+        self.page.locator(self.reg_helper.user_mail).fill(user_mail)
 
     @allure.step("Filing user password field")
     def fill_user_password(self, user_password):
-        self.page.locator(self.reg_helper.user_password).fill(user_password, timeout=1000)
+        self.page.locator(self.reg_helper.user_password).fill(user_password)
 
     @allure.step("Filing user password repeat field")
     def fill_user_password_repeat(self, user_password):
-        self.page.locator(self.reg_helper.user_password_repeat).fill(user_password, timeout=1000)
+        self.page.locator(self.reg_helper.user_password_repeat).fill(user_password)
 
     def is_registration_form_opened(self) -> bool:
         try:
-            expect(self.page.locator(self.reg_helper.registration_text_locator)).to_have_text('Registration', timeout=1000)
+            expect(self.page.locator(self.reg_helper.registration_text_locator)).to_have_text('Registration')
             return True
         except AssertionError:
             return False
@@ -55,8 +55,8 @@ class RegistrationForm:
         self.fill_registration_fields(user_name, user_last_name, user_mail, user_password, user_password_repeat)
         if self.page.locator(self.reg_helper.register_button).is_enabled():
             with allure.step("Click on enabled Register button"):
-                self.page.locator(self.reg_helper.register_button).click(timeout=2000)
-        self.page.wait_for_timeout(1000)
+                self.page.locator(self.reg_helper.register_button).click()
+        #self.page.wait_for_timeout(1000)
         return self
 
     def fill_registration_fields(self, user_name,
@@ -92,7 +92,7 @@ class RegistrationForm:
 
     def is_registration_successful(self):
         try:
-            expect(self.page.locator(self.reg_helper.my_profile)).to_have_text('My profile', timeout=1000)
+            expect(self.page.locator(self.reg_helper.my_profile)).to_have_text('My profile')
             return True
         except AssertionError:
             return False
@@ -100,35 +100,35 @@ class RegistrationForm:
 
     def is_registration_failed_by_password_conditions(self):
         try:
-            expect(self.page.get_by_text(self.reg_helper.error_password_text)).to_be_visible(timeout=1000)
+            expect(self.page.get_by_text(self.reg_helper.error_password_text)).to_be_visible()
             return True
         except AssertionError:
             return False
 
     def is_registration_failed_by_name_length(self):
         try:
-            expect(self.page.get_by_text(self.reg_helper.error_name_by_length)).to_be_visible(timeout=1000)
+            expect(self.page.get_by_text(self.reg_helper.error_name_by_length)).to_be_visible()
             return True
         except AssertionError:
             return False
 
     def is_registration_failed_invalid_name(self):
         try:
-            expect(self.page.get_by_text(self.reg_helper.error_name_invalid)).to_be_visible(timeout=1000)
+            expect(self.page.get_by_text(self.reg_helper.error_name_invalid)).to_be_visible()
             return True
         except AssertionError:
             return False
 
     def is_registration_failed_invalid_name_and_length(self):
         try:
-            expect(self.page.get_by_text(self.reg_helper.error_name_invalid) and self.page.get_by_text(self.reg_helper.error_name_by_length)).to_be_visible(timeout=1000)
+            expect(self.page.get_by_text(self.reg_helper.error_name_invalid) and self.page.get_by_text(self.reg_helper.error_name_by_length)).to_be_visible()
             return True
         except AssertionError:
             return False
 
     def is_registration_failed_incorrect_mail(self):
         try:
-            expect(self.page.get_by_text(self.reg_helper.error_mail_text)).to_be_visible(timeout=1000)
+            expect(self.page.get_by_text(self.reg_helper.error_mail_text)).to_be_visible()
             return True
         except AssertionError:
             return False
